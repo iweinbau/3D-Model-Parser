@@ -13,6 +13,7 @@
 #include "MeshLoader.hpp"
 #include "../Mesh/Mesh.hpp"
 #include "../Utils/Vect3.hpp"
+#include "../Utils/Vect2.hpp"
 #include "../Utils/Algorithm.hpp"
 
 namespace MeshLoader {
@@ -44,6 +45,8 @@ namespace MeshLoader {
         //constuct mesh data.
         std::vector<Vect3> Positions;
         std::vector<Vect3> Normals;
+        std::vector<Vect2> UVs;
+
         std::vector<unsigned int> Indices;
 
         
@@ -66,6 +69,17 @@ namespace MeshLoader {
                 float z = std::stof(line_split[3]);
                 Vect3 pos = Vect3(x,y,z);
                 Positions.push_back(pos);
+            }
+            
+            //check if the line starts with v -> vertex.
+            if(algorithm::startsWith(currentLine, "vt ")){
+                //construct new vertex position.
+                std::vector<std::string> line_split = algorithm::split(currentLine,' ');
+                
+                float u = std::stof(line_split[1]);
+                float v = std::stof(line_split[2]);
+                Vect2 uv = Vect2(u,v);
+                UVs.push_back(uv);
             }
             
             //check if the line starts with v -> vertex.
