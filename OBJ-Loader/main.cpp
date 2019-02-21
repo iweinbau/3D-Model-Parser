@@ -13,11 +13,6 @@
 int main(int argc, const char * argv[]) {
     // insert code here...
     MeshLoader::OBJLoader objLoader;
-    try {
-        objLoader.loadMesh("./Testpath.obj");
-    } catch (const char* msg) {
-        std::cout << msg << std::endl;
-        
-    }
+    objLoader.loadMesh("./Objects/cube.obj");
     return 0;
 }

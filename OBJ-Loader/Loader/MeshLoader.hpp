@@ -17,14 +17,19 @@ namespace MeshLoader {
     public:
         MeshLoader(){};
         ~MeshLoader(){};
-        virtual Mesh loadMesh(std::string filePath) = 0;
+        Mesh getLoadedMesh(){
+            return _mesh;
+        }
+        virtual bool loadMesh(std::string filePath) = 0;
+    private:
+        Mesh _mesh;
     };
     
     class OBJLoader: public MeshLoader{
     public:
         OBJLoader();
         ~OBJLoader();
-        Mesh loadMesh(std::string filePath);
+        bool loadMesh(std::string filePath);
     };
 }
 #endif /* MeshLoader_h */
