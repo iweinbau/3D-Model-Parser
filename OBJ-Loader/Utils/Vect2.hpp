@@ -56,24 +56,24 @@ public:
     }
 };
 
-Vect2 operator + (const Vect2 & v1, const Vect2 &v2) {
+inline Vect2 operator + (const Vect2 & v1, const Vect2 &v2) {
     return Vect2(v1.x_ + v2.x_, v1.y_ + v2.y_);
 }
 
-Vect2 operator - (const Vect2 & v1, const Vect2 &v2){
+inline Vect2 operator - (const Vect2 & v1, const Vect2 &v2){
     return Vect2(v1.x_ - v2.x_, v1.y_ - v2.y_);
 }
 
-Vect2 operator * (const Vect2 & v1, const Vect2 &v2){
+inline Vect2 operator * (const Vect2 & v1, const Vect2 &v2){
     return Vect2(v1.x_ * v2.x_, v1.y_ * v2.y_);
 }
 
-Vect2 operator / (const Vect2 & v1, double const& s) {
+inline Vect2 operator / (const Vect2 & v1, double const& s) {
     return Vect2(v1.x_ / s, v1.y_ / s);
 }
 
 
-Vect2 operator * (const Vect2 & v1, double const& s) {
+inline Vect2 operator * (const Vect2 & v1, double const& s) {
     return Vect2(v1.x_ * s, v1.y_ * s);
 }
 #endif /* Vect2_h */

@@ -9,8 +9,8 @@
 #ifndef MeshLoader_h
 #define MeshLoader_h
 
-#include "../Mesh/Mesh.hpp"
 #include <iostream>
+#include "../Mesh/Mesh.hpp"
 
 namespace MeshLoader {
     class MeshLoader {
@@ -21,7 +21,7 @@ namespace MeshLoader {
             return _mesh;
         }
         virtual bool loadMesh(std::string filePath) = 0;
-    private:
+    protected:
         Mesh _mesh;
     };
     
@@ -30,6 +30,39 @@ namespace MeshLoader {
         OBJLoader();
         ~OBJLoader();
         bool loadMesh(std::string filePath);
+    };
+    
+    class Vertex{
+    public:
+        Vertex():
+        _pos(),_normal(),_uv(){}
+        
+        Vertex(Vect3 pos, Vect3 normal, Vect2 uv):
+        _pos(pos),
+        _normal(normal),
+        _uv(uv){}
+        
+        Vertex(Vect3 pos):
+        _pos(pos),_normal(),_uv(){}
+        
+        ~Vertex(){}
+        
+        void addNormal(Vect3 const& normal){
+            _normal = (_normal + normal).normalize();
+        }
+        Vect3 getPosition(){
+            return _pos;
+        }
+        Vect3 getNormal(){
+            return _normal;
+        }
+        
+    private:
+        int _index;
+        Vect3 _pos;
+        Vect3 _normal; //average normal
+        Vect2 _uv;
+        
     };
 }
 #endif /* MeshLoader_h */

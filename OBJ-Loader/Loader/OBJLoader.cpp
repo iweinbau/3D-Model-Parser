@@ -10,8 +10,7 @@
 #include <fstream>
 #include <vector>
 
-#include "MeshLoader.hpp"
-#include "../Mesh/Mesh.hpp"
+#include "./MeshLoader.hpp"
 #include "../Utils/Vect3.hpp"
 #include "../Utils/Vect2.hpp"
 #include "../Utils/Algorithm.hpp"
@@ -41,23 +40,30 @@ namespace MeshLoader {
         //Do file loading.
         std::cout << "Parsing obj-file: "<<filePath << std::endl;
         
-        
         //constuct mesh data.
+        std::string obj_name;
+        std::vector<Vertex> vertices;
         std::vector<Vect3> Positions;
         std::vector<Vect3> Normals;
         std::vector<Vect2> UVs;
 
-        std::vector<unsigned int> Indices;
-
-        
-
+        std::vector<unsigned int> V_indices;
         
         //the current line
         std::string currentLine;
         //loop over each line and parse the needed data.
         while(std::getline(file, currentLine)){
+            
             //for now we just print the line
             std::cout << currentLine << std::endl;
+            
+            //check if the line starts with v -> vertex.
+            if(algorithm::startsWith(currentLine, "o ")){
+                //construct new vertex position.
+                std::vector<std::string> line_split = algorithm::split(currentLine,' ');
+                
+                obj_name = line_split[1];
+            }
             
             //check if the line starts with v -> vertex.
             if(algorithm::startsWith(currentLine, "v ")){
@@ -68,12 +74,14 @@ namespace MeshLoader {
                 float y = std::stof(line_split[2]);
                 float z = std::stof(line_split[3]);
                 Vect3 pos = Vect3(x,y,z);
+                Vertex v(pos);
                 Positions.push_back(pos);
+                vertices.push_back(v);
             }
             
-            //check if the line starts with v -> vertex.
+            //check if the line starts with vt -> vertex uv.
             if(algorithm::startsWith(currentLine, "vt ")){
-                //construct new vertex position.
+                //construct new vertex uv.
                 std::vector<std::string> line_split = algorithm::split(currentLine,' ');
                 
                 float u = std::stof(line_split[1]);
@@ -82,9 +90,9 @@ namespace MeshLoader {
                 UVs.push_back(uv);
             }
             
-            //check if the line starts with v -> vertex.
+            //check if the line starts with vn -> vertex normals.
             if(algorithm::startsWith(currentLine, "vn ")){
-                //construct new vertex position.
+                //construct new vertex normal.
                 std::vector<std::string> line_split = algorithm::split(currentLine,' ');
                 
                 float x = std::stof(line_split[1]);
@@ -93,12 +101,61 @@ namespace MeshLoader {
                 Vect3 normal = Vect3(x,y,z);
                 Normals.push_back(normal);
             }
+            
+            //check if the line starts with f -> constuct faces.
+            if(algorithm::startsWith(currentLine, "f ")){
+                //construct new vertex position.
+                
+                std::vector<std::string> line_split = algorithm::split(currentLine,' ');
+                
+                //Parse all vertices.
+                std::vector<std::string> vertex1 = algorithm::split(line_split[1],'/');
+                std::vector<std::string> vertex2 = algorithm::split(line_split[2],'/');
+                std::vector<std::string> vertex3 = algorithm::split(line_split[3],'/');
+    
+                //We can check here in which format. V/T/N, V//N, V//, ...
+                //For now we ignore this and use V//N.
+                
+                //V -> index in the positions array.
+                //N -> index in the normals array.
+                
+                //VERTEX 1
+                Vertex* v = &vertices[std::stoi(vertex1[0])-1];
+                Vect3 normal = Normals[std::stoi(vertex1[2])-1];
+                v->addNormal(normal);
+                V_indices.push_back(std::stoi(vertex1[0])-1);
+                
+                //VERTEX 2
+                v = &vertices[std::stoi(vertex2[0])-1];
+                normal = Normals[std::stoi(vertex2[2])-1];
+                v->addNormal(normal);
+                V_indices.push_back(std::stoi(vertex2[0])-1);
+                
+                //VERTEX 3
+                v = &vertices[std::stoi(vertex3[0])-1];
+                normal = Normals[std::stoi(vertex3[2])-1];
+                v->addNormal(normal);
+                V_indices.push_back(std::stoi(vertex3[0])-1);
+                
+                //For UV we have to check if the uv is the same as one we already
+                //have in the set. Else we have to
+            }
         }
         
-        //Load mesh data.
-        
         //close stream
-        //return new mesh.
+        file.close();
+        
+        Positions.clear();
+        Normals.clear();
+        
+        for (Vertex v: vertices) {
+            Positions.push_back(v.getPosition());
+            Normals.push_back(v.getNormal());
+        }
+        //Load mesh data.
+        _mesh = Mesh(obj_name, Positions, Normals, UVs, V_indices);
+        
+        //return true, succes.
         return true;
     }
 

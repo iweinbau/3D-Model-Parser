@@ -1,3 +1,3 @@
 all: 
-	g++ main.cpp ./Loader/OBJLoader.cpp -o OBJ-loader
+	g++ main.cpp ./Mesh/Mesh.cpp ./Loader/OBJLoader.cpp -o OBJ-loader
 

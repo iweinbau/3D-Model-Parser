@@ -8,11 +8,31 @@
 
 #ifndef Mesh_h
 #define Mesh_h
+
+#include <iostream>
+#include <vector>
+
+#include "../Utils/Vect2.hpp"
+#include "../Utils/Vect3.hpp"
+
 class Mesh {
 public:
     // Constructor
-    Mesh(){}
+    Mesh();
+    Mesh(std::string name,
+               std::vector<Vect3> positions,
+               std::vector<Vect3> normals,
+               std::vector<Vect2> UVs,
+               std::vector<unsigned int> vindices);
+
     // Destructor.
     ~Mesh(){}
+
+private:
+    std::string _name;
+    std::vector<Vect3> _positions;
+    std::vector<Vect3> _normals;
+    std::vector<Vect2> _UVs;
+    std::vector<unsigned int> _vindices;
 };
 #endif /* Mesh_h */
