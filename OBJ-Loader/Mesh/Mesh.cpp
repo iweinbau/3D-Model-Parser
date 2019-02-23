@@ -9,11 +9,11 @@
 #include "Mesh.hpp"
 
 Mesh::Mesh(){};
-Mesh::Mesh(std::string name,
-           std::vector<Vect3> positions,
-           std::vector<Vect3> normals,
-           std::vector<Vect2> UVs,
-           std::vector<unsigned int> indices):
+Mesh::Mesh(std::string const& name,
+           std::vector<Vect3> const& positions,
+           std::vector<Vect3> const& normals,
+           std::vector<Vect2> const& UVs,
+           std::vector<unsigned int> const& indices):
             _name(name),
             _positions(positions),
             _normals(normals),

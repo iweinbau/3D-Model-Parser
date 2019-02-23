@@ -30,6 +30,7 @@ namespace MeshLoader {
         OBJLoader();
         ~OBJLoader();
         bool loadMesh(std::string filePath);
+    private:
     };
     
     class Vertex{

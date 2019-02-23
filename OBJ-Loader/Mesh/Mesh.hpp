@@ -19,11 +19,11 @@ class Mesh {
 public:
     // Constructor
     Mesh();
-    Mesh(std::string name,
-               std::vector<Vect3> positions,
-               std::vector<Vect3> normals,
-               std::vector<Vect2> UVs,
-               std::vector<unsigned int> indices);
+    Mesh(std::string const& name,
+               std::vector<Vect3> const& positions,
+               std::vector<Vect3> const& normals,
+               std::vector<Vect2> const& UVs,
+               std::vector<unsigned int> const& indices);
 
     // Destructor.
     ~Mesh(){

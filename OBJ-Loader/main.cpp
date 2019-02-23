@@ -13,6 +13,6 @@
 int main(int argc, const char * argv[]) {
     // insert code here...
     MeshLoader::OBJLoader objLoader;
-    objLoader.loadMesh("/Users/iweinbau/Projects/OBJ-Loader/OBJ-Loader/Objects/smooth_cube.obj");
+    objLoader.loadMesh("./Objects/cube.obj");
     return 0;
 }
