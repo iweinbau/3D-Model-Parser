@@ -42,25 +42,25 @@ namespace MeshLoader {
         _normal(normal),
         _uv(uv){}
         
-        Vertex(Vect3 pos):
-        _pos(pos),_normal(),_uv(){}
+        Vertex(Vect3 pos,Vect3 normal):
+        _pos(pos),_normal(normal),_uv(){}
         
         ~Vertex(){}
         
-        void addNormal(Vect3 const& normal){
-            _normal = (_normal + normal).normalize();
-        }
         Vect3 getPosition(){
             return _pos;
         }
         Vect3 getNormal(){
             return _normal;
         }
+        Vect2 getUV(){
+            return _uv;
+        }
         
     private:
         int _index;
         Vect3 _pos;
-        Vect3 _normal; //average normal
+        Vect3 _normal;
         Vect2 _uv;
         
     };

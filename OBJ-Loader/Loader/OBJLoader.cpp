@@ -74,9 +74,7 @@ namespace MeshLoader {
                 float y = std::stof(line_split[2]);
                 float z = std::stof(line_split[3]);
                 Vect3 pos = Vect3(x,y,z);
-                Vertex v(pos);
                 Positions.push_back(pos);
-                vertices.push_back(v);
             }
             
             //check if the line starts with vt -> vertex uv.
@@ -119,26 +117,38 @@ namespace MeshLoader {
                 //V -> index in the positions array.
                 //N -> index in the normals array.
                 
+                //@NOTE: this only works when mesh is already triangulated.
                 //VERTEX 1
-                Vertex* v = &vertices[std::stoi(vertex1[0])-1];
+                Vect3 position = Positions[std::stoi(vertex1[0])-1];
+                //Vect2 uv = UVs[std::stoi(vertex1[1])-1];
                 Vect3 normal = Normals[std::stoi(vertex1[2])-1];
-                v->addNormal(normal);
-                V_indices.push_back(std::stoi(vertex1[0])-1);
+                
+                Vertex v1(position,normal);
+                vertices.push_back(v1);
                 
                 //VERTEX 2
-                v = &vertices[std::stoi(vertex2[0])-1];
+                position = Positions[std::stoi(vertex2[0])-1];
+                //uv = UVs[std::stoi(vertex2[1])-1];
                 normal = Normals[std::stoi(vertex2[2])-1];
-                v->addNormal(normal);
-                V_indices.push_back(std::stoi(vertex2[0])-1);
                 
+                Vertex v2(position,normal);
+                vertices.push_back(v2);
+
                 //VERTEX 3
-                v = &vertices[std::stoi(vertex3[0])-1];
+                position = Positions[std::stoi(vertex3[0])-1];
+                //uv = UVs[std::stoi(vertex3[1])-1];
                 normal = Normals[std::stoi(vertex3[2])-1];
-                v->addNormal(normal);
-                V_indices.push_back(std::stoi(vertex3[0])-1);
                 
-                //For UV we have to check if the uv is the same as one we already
-                //have in the set. Else we have to
+                Vertex v3(position,normal);
+                vertices.push_back(v3);
+                
+                //Add to Indices array.
+                //calculate the index number
+                //The 3 comes from 3 vertices per face.
+                unsigned int index = vertices.size() - 3;
+                V_indices.push_back(index);
+                V_indices.push_back(index+1);
+                V_indices.push_back(index+2);
             }
         }
         
@@ -147,11 +157,15 @@ namespace MeshLoader {
         
         Positions.clear();
         Normals.clear();
+        UVs.clear();
         
+        //reorder the arrays so the coresponding index match the position,uv and normal.
         for (Vertex v: vertices) {
             Positions.push_back(v.getPosition());
-            Normals.push_back(v.getNormal());
+            //Normals.push_back(v.getNormal());
+            UVs.push_back(v.getUV());
         }
+        
         //Load mesh data.
         _mesh = Mesh(obj_name, Positions, Normals, UVs, V_indices);
         

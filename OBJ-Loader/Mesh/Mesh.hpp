@@ -23,16 +23,18 @@ public:
                std::vector<Vect3> positions,
                std::vector<Vect3> normals,
                std::vector<Vect2> UVs,
-               std::vector<unsigned int> vindices);
+               std::vector<unsigned int> indices);
 
     // Destructor.
-    ~Mesh(){}
+    ~Mesh(){
+        
+    }
 
 private:
     std::string _name;
     std::vector<Vect3> _positions;
     std::vector<Vect3> _normals;
     std::vector<Vect2> _UVs;
-    std::vector<unsigned int> _vindices;
+    std::vector<unsigned int> _indices;
 };
 #endif /* Mesh_h */

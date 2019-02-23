@@ -13,9 +13,9 @@ Mesh::Mesh(std::string name,
            std::vector<Vect3> positions,
            std::vector<Vect3> normals,
            std::vector<Vect2> UVs,
-           std::vector<unsigned int> vindices):
+           std::vector<unsigned int> indices):
             _name(name),
             _positions(positions),
             _normals(normals),
             _UVs(UVs),
-            _vindices(vindices){};
+            _indices(indices){};
